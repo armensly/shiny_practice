@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = FALSE)
 - In each tab, the user can use the dropdown list to select one school or one program to be shown on the map 
     + the programs are all computer science subcategories and a few others (see the next slide)
 - The maps are generated using leaflet
+- The app is accessible through [shinyapps.io server (click to use the app)](https://armen.shinyapps.io/schools/)
 
 ## Limitation
 
