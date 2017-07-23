@@ -1,0 +1,62 @@
+---
+title: "A Shiny App for Finding US Higher Ed Institution on Leaflet Maps"
+author: "Armen Abnousi"
+date: "July 22, 2017"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## App Summary
+
+- For this project I use the [NCES data](https://nces.ed.gov/ipeds/datacenter/InstitutionList.aspx) for US higher education institutions to generate a shiny app showing the location of all the institutions.
+- The user can select one of the three tabs: 
+
+    * "select by school name"
+    * "select by program"
+    * "select by program (clustered view)"
+- In each tab, the user can use the dropdown list to select one school or one program to be shown on the map 
+    + the programs are all computer science subcategories and a few others (see the next slide)
+- The maps are generated using leaflet
+
+## Limitation
+
+Since the data was big, shiny app was too slow, as a result I subseted the program data to include only:
+
+- Computer Science program and all its subcategories
+- Bioinformatics
+- Medical Informatics
+- I plan to later modify the app structure so that other programs can be shown as well (or at least selected to be shown)
+
+## Input files
+
+Multiple input files have been merged to generate the final two files that are used in the app.
+The result for the *str()* ran on the final files is shown below.
+```{r echo = FALSE}
+schools <- read.csv("schools/final_schools.csv")
+programs <- read.csv("schools/final_computer_programs.csv")
+```
+```{r cars, echo = TRUE}
+str(schools)
+str(programs)
+```
+
+## Leaflet
+
+To use leaflet in Shiny apps we need to use the following commands, similar to *renderPlot()* and *plotOutput()*:
+
+- **leafletOutput()**
+- **renderLeaflet()**
+
+Additionally, to change the map as a result of the user interaction, we should use:
+
+- **leafletProxy()**
+
+## Final Map
+The leaflet map shows the Institution names as popups by clicking on them.
+```{r message=FALSE}
+library(leaflet)
+leaflet(schools) %>% addTiles() %>% addCircleMarkers(popup = schools$INSTNM, clusterOptions = markerClusterOptions())
+```
